@@ -1,30 +1,32 @@
 const User = require("../../models/User");
-const {config} = require("dotenv");
+const { config } = require("dotenv");
 const jwt = require("jsonwebtoken");
+const authAdmin = require("./../../../firebas-config")
 
 config();
 
 module.exports = {
-    login: (req,res) => {
+    login: (req, res) => {
         let { number, password } = req.body;
         User.findOne({
             number: number
-        }, function(err, user) {
+        }, function (err, user) {
             if (err) throw err;
 
             if (!user) {
-                res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+                res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
             } else {
                 // check if password matches
                 user.comparePassword(password, function (err, isMatch) {
                     if (isMatch && !err) {
                         const token = jwt.sign({
                             name: user.number,
-                            role: user.category}, 
-                            process.env.PRIVATE_KEY, 
+                            role: user.category
+                        },
+                            process.env.PRIVATE_KEY,
                             {
-                            expiresIn: 604800 // 1 week
-                        });
+                                expiresIn: 604800 // 1 week
+                            });
                         user.password = null;
                         res.json({
                             success: true,
@@ -32,7 +34,7 @@ module.exports = {
                             data: user
                         })
                     } else {
-                        res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                        res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
                     }
                 });
             }
@@ -42,15 +44,15 @@ module.exports = {
 
     register: (req, res) => {
         let { number, password, password_confirmation } = req.body;
-        if(password !== password_confirmation) {
+        if (password !== password_confirmation) {
             return Response.sendError(res, 'Password confirmation failed, mismatched passwords');
         }
 
         User.findOne({
             number: number
         }, function (err, result) {
-            if(err) throw err;
-            if(result) {
+            if (err) throw err;
+            if (result) {
                 return Response.sendError(res, 'registration failed. user already exist');
             }
             let newUser = new User({
@@ -58,15 +60,15 @@ module.exports = {
                 password: password,
             });
             newUser.save(function (err, user) {
-                if(err) throw err;
+                if (err) throw err;
 
-                const token = jwt.sign({data: user}, process.env.PRIVATE_KEY, {
+                const token = jwt.sign({ data: user }, process.env.PRIVATE_KEY, {
                     expiresIn: 604800 // 1 week
                 });
 
                 res.json({
                     success: true,
-                    token: 'JWT '+token,
+                    token: 'JWT ' + token,
                     data: user
                 })
             })
@@ -74,7 +76,7 @@ module.exports = {
     },
 
     loggedUser: (req, res) => {
-        if(!req.user){
+        if (!req.user) {
             return Response.sendError(res, 'authenticated user not found');
         }
         return Response.sendSuccess(res, req.user, 'logged user retrieved successful');
@@ -82,8 +84,48 @@ module.exports = {
 
     logout: (req, res) => {
         localStorage.clear();
-        return Response.sendSuccess(res, {url: '/'}, 'user logged out successfully');
-    }
+        return Response.sendSuccess(res, { url: '/' }, 'user logged out successfully');
+    },
+
+    createOrUpdateSuperAdmin: (req, res) => {
+        let { displayName, email, password, uid, role } = req.body;
+        if (uid && role) {
+            authAdmin 
+                .auth()
+                .setCustomUserClaims(uid, { role: role })
+                .then(() => {
+                    return res.status(200).send("success_msg", "updated successfully");
+                })
+                .catch(function (error) {
+                    return res.status(200).send("error_msg", error.message);
+                });
+
+            ;
+            return;
+        }
+     authAdmin 
+
+            .auth()
+            .createUser({
+                displayName,
+                email,
+                password: password,
+            })
+            .then((user) => {
+                authAdmin 
+                    .auth()
+                    .setCustomUserClaims(user.uid, { role: 1 })
+                    .then(() => {
+                        return res.status(200).send("success_msg", "created successfully");
+
+                    });
+            })
+            .catch(function (error) {
+                return res.status(200).send("error_msg", error.message);
+            });
+
+
+    },
 
 }
 

@@ -9,9 +9,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const response = require("./server/utils/response");
 const mongoose = require("mongoose");
-const dbUtilities = require('./server/utils/database');
+// const dbUtilities = require('./server/utils/database');
 const routes = require("./server/routes/index");
 const { config } = require("dotenv");
+
 
 const app = express();
 
