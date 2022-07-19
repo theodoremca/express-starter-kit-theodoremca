@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node index.js",
     "watch": "nodemon index.js",
+    "start": "nodemon index.js",
     "client": "npm start --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seeder": "node seeder.js"
