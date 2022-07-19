@@ -62,6 +62,34 @@ app.get('/', function (req, res) {
     return Response.sendSuccess(res, null, 'welcome to hds Request App.');
 });
 
+app.get('/doc',(req,res)=>{
+        return res.status(200).json(
+          {  routes:[{
+            "route":"api/auth/role",
+            "requestType":"Post - FormData",
+            "purpose":"admin user with custom clain",
+           "details": [{
+            "type":"Exisiting User",
+            "req":{
+                "uid":"string",
+                "role":"string|number|default is 'super'",
+                "serviceAccount":"File(json file)"
+            }
+    },
+    {
+        "type":"New User",
+        "requestType":"Post - FormData",
+        "req":{
+            "displayName":"Theodore Imonigie",
+             "email":"theodoreImonigie@gmail.com",
+             "password":"password",
+             "role":"string|number|default is 'super'",
+             "serviceAccount":"File(json file)"
+        }
+}
+]}]});
+})
+
 
 //api routes
 app.use('/api', routes.routes);

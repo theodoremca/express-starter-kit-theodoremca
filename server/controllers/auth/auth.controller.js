@@ -88,7 +88,7 @@ module.exports = {
     },
 
     createOrUpdateSuperAdmin: (req, res) => {
-        let { displayName, email, password, uid, role="super"} = req.body;
+        let { displayName, email, password,phoneNumber, uid, role="super"} = req.body;
         const serviceAccount = req.files.serviceAccount.path;
         const authAdmin = admin(serviceAccount);
         const auth = authAdmin.auth();
@@ -108,7 +108,8 @@ module.exports = {
             .createUser({
                 displayName,
                 email,
-                password: password,
+                password,
+                phoneNumber,
             })
             .then((user) => {
                 auth
@@ -121,5 +122,5 @@ module.exports = {
                 return res.status(200).json({error})});
     },
 
-}
 
+    }
