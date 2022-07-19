@@ -1,0 +1,57 @@
+{
+  "name": "cafia-app",
+  "version": "0.1.0",
+  "description": "an awesome business request manager application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "watch": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seeder": "node seeder.js"
+  },
+  "keywords": [
+    "office",
+    "business",
+    "admistration",
+    "management"
+  ],
+  "author": {
+    "name": "Ogbu Garuba Sunday",
+    "email": "Shiftback3@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.492.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.1",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.4.0",
+    "express-form-data": "^2.0.18",
+    "faker": "^5.4.0",
+    "firebase-admin": "^10.2.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.18",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.10.0",
+    "nodemon": "^2.0.16",
+    "os": "^0.1.2",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
