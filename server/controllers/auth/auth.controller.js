@@ -97,7 +97,7 @@ module.exports = {
                 .setCustomUserClaims(uid, { role: role })
                 .then(() => {
                     
-                    return res.status(200).json({role,name:authAdmin.appCheck.name})
+                    return res.status(200).json({role})
                 })
                 .catch(function (error) {
                     return res.status(200).json({error})
